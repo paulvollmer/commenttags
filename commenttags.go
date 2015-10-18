@@ -1,21 +1,11 @@
 package commenttags
 
 import (
-	"io/ioutil"
 	"strings"
 )
 
 type CommentTags struct {
 	Tags []CommentTag
-}
-
-func ProcessFile(src string) (*CommentTags, error) {
-	data, err := ioutil.ReadFile(src)
-	if err != nil {
-		return &CommentTags{}, err
-	}
-	tags := ProcessData(data)
-	return tags, nil
 }
 
 func ProcessData(data []byte) *CommentTags {
