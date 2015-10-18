@@ -64,5 +64,5 @@ func (t *CommentTag) Pretty() string {
 }
 
 func (t *CommentTag) PrettyPrint() {
-	fmt.Printf(t.Pretty())
+	fmt.Printf(t.Pretty() + "\n")
 }

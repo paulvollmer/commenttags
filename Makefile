@@ -6,4 +6,7 @@ build:
 	@echo "BUILD & EXECUTABLE"
 
 test:
+	@echo "### TESTING PACKAGE ##################################################"
 	@go test -v
+	@echo "### TESTING CMD ######################################################"
+	@cd cmd/commenttags && go test -v

@@ -26,7 +26,7 @@ func ProcessData(data []byte) *CommentTags {
 func (c *CommentTags) Pretty() string {
 	out := ""
 	for _, v := range c.Tags {
-		out += v.Pretty() + "\n"
+		out += v.Pretty()
 	}
 	return out
 }
