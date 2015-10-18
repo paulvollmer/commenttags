@@ -7,9 +7,9 @@ import (
 
 // CommentTag store data for a code comment tag
 type CommentTag struct {
-	Tag     string
-	Line    int
-	Message string
+	Tag     string `json:"tag"`
+	Line    int    `json:"line"`
+	Message string `json:"message"`
 }
 
 // Use the ParseComment func to parse a source and return a new CommentTag.
@@ -60,7 +60,7 @@ func ParseCommentTag(source, tag string) (*CommentTag, bool) {
 
 // Print the data to stdout
 func (t *CommentTag) Pretty() string {
-	return fmt.Sprintf("Tag: %s \tLine: %d \tMessage: '%s'\n", t.Tag, t.Line, t.Message)
+	return fmt.Sprintf("Tag %s @line %d \t '%s'\n", t.Tag, t.Line, t.Message)
 }
 
 func (t *CommentTag) PrettyPrint() {
