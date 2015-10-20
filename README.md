@@ -4,3 +4,10 @@ find TODO, FIXME and XXX [commenttags](https://en.wikipedia.org/wiki/Comment_(co
 
 ## Goal
 fast and easy to distribute (binary) tool. No language like node.js or ruby required for running the tool.
+
+## Installation
+
+install the commandline interface by running
+```
+go get github.com/paulvollmer/commenttags/cmd/commenttags
+```
