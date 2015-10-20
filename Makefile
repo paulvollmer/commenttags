@@ -7,6 +7,6 @@ build:
 
 test:
 	@echo "### TESTING PACKAGE ##################################################"
-	@go test -v
+	@go test -v -cover
 	@echo "### TESTING CMD ######################################################"
-	@cd cmd/commenttags && go test -v
+	@cd cmd/commenttags && go test -v -cover
