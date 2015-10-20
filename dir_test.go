@@ -1,11 +1,11 @@
-package main
+package commenttags
 
 import (
 	"testing"
 )
 
 func Test_ProcessDir(t *testing.T) {
-	_, err := ProcessDirectory("../../fixture", 500000)
+	_, err := ProcessDirectory("./fixture", 500000)
 	if err != nil {
 		t.Error(err)
 	}

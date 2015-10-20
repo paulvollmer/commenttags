@@ -1,14 +1,13 @@
-package main
+package commenttags
 
 import (
 	"fmt"
-	"github.com/paulvollmer/commenttags"
 	"io/ioutil"
 )
 
 type FileData struct {
 	Filename string
-	commenttags.CommentTags
+	CommentTags
 }
 
 func ProcessFile(src string) (*FileData, error) {
@@ -16,7 +15,7 @@ func ProcessFile(src string) (*FileData, error) {
 	if err != nil {
 		return &FileData{}, err
 	}
-	tags := commenttags.ProcessData(data)
+	tags := ProcessData(data)
 	return &FileData{src, *tags}, nil
 }
 

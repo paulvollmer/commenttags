@@ -1,15 +1,15 @@
-package main
+package commenttags
 
 import (
 	"testing"
 )
 
 func Test_ProcessFile(t *testing.T) {
-	tags, err := ProcessFile("../../fixture/sample.js")
+	tags, err := ProcessFile("./fixture/sample.js")
 	if err != nil {
 		t.Error(err)
 	}
-	if tags.Filename != "../../fixture/sample.js" {
+	if tags.Filename != "./fixture/sample.js" {
 		t.Error("ProcessFile Filename not equal.")
 	}
 

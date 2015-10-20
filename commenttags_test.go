@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Test_ProcessFile(t *testing.T) {
+func Test_ProcessData(t *testing.T) {
 	tags := ProcessData([]byte("TODO: hello-test"))
 	if len(tags.Tags) != 1 {
 		t.Error("ProcessData Tags length not equal.")
