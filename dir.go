@@ -66,3 +66,18 @@ func (d *DirectoryData) SaveJSON(filename string, perm os.FileMode) error {
 	err = ioutil.WriteFile(filename, data, perm)
 	return err
 }
+
+func ParseJSON(data []byte) (DirectoryData, error) {
+	v := DirectoryData{}
+	err := json.Unmarshal(data, &v)
+	return v, err
+}
+
+func ReadJSON(filename string) (*DirectoryData, error) {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return &DirectoryData{}, err
+	}
+	v, errParse := ParseJSON(data)
+	return &v, errParse
+}
