@@ -6,6 +6,7 @@ build:
 	@echo "BUILD & EXECUTABLE"
 
 test:
+	@go vet
 	@echo "### TESTING PACKAGE ##################################################"
 	@go test -v -cover
 	@echo "### TESTING CMD ######################################################"
