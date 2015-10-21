@@ -40,7 +40,7 @@ func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
 				// TODO: check filesize  v.Size() < maxSize
 				tmpFiles, errFiles := ProcessFile(name + "/" + v.Name())
 				if errFiles != nil {
-					fmt.Errorf("ERROR...", errFiles)
+					return &DirectoryData{}, errFiles
 				}
 				// if tags exist, add to the files array
 				if len(tmpFiles.Tags) > 0 {
