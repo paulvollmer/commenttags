@@ -13,7 +13,7 @@ type FileData struct {
 func ProcessFile(src string) (*FileData, error) {
 	data, err := ioutil.ReadFile(src)
 	if err != nil {
-		return &FileData{}, err
+		return nil, err
 	}
 	tags := ProcessData(data)
 	return &FileData{src, *tags}, nil
