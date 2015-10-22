@@ -14,13 +14,12 @@ type DirectoryData struct {
 
 func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
 	fmt.Println("ProcessDirectory", name)
-
-	data := DirectoryData{}
+	data := &DirectoryData{}
 	data.Dirname = name
 
 	dir, err := ioutil.ReadDir(name)
 	if err != nil {
-		return &data, err
+		return nil, err
 	}
 	if len(dir) != 0 {
 		for _, v := range dir {
@@ -40,7 +39,7 @@ func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
 				// TODO: check filesize  v.Size() < maxSize
 				tmpFiles, errFiles := ProcessFile(name + "/" + v.Name())
 				if errFiles != nil {
-					return &DirectoryData{}, errFiles
+					return nil, errFiles
 				}
 				// if tags exist, add to the files array
 				if len(tmpFiles.Tags) > 0 {
@@ -49,7 +48,7 @@ func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
 			}
 		}
 	}
-	return &data, nil
+	return data, nil
 }
 
 func (d *DirectoryData) PrettyPrint() {
