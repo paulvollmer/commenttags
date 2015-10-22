@@ -9,7 +9,7 @@ type CommentTags struct {
 }
 
 func ProcessData(data []byte) *CommentTags {
-	c := CommentTags{}
+	c := &CommentTags{}
 	lines := strings.Split(string(data), "\n")
 	for k, line := range lines {
 		// find code tags...
@@ -20,7 +20,7 @@ func ProcessData(data []byte) *CommentTags {
 			c.Tags = append(c.Tags, *tag)
 		}
 	}
-	return &c
+	return c
 }
 
 func (c *CommentTags) Pretty() string {

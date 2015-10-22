@@ -14,7 +14,7 @@ type CommentTag struct {
 
 // Use the ParseComment func to parse a source and return a new CommentTag.
 func ParseComment(source string) (*CommentTag, bool) {
-	var tag *CommentTag
+	tag := &CommentTag{}
 	var found bool
 	for i := 0; i < 5; i++ {
 		switch i {
