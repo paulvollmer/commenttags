@@ -9,15 +9,13 @@ import (
 	"os"
 )
 
-const (
-	Version     = "0.1.0"
-	MaxSizeFile = 5000000
-)
+const Version = "0.1.0"
 
 func main() {
-	flagVersion := flag.Bool("v", false, "Print out the version")
-	flagFormat := flag.String("f", "pretty", "format as pretty formatted text or json")
-	flagWrite := flag.String("write", "", "write to file")
+	flagVersion := flag.Bool("v", false, "print out the `version`")
+	flagFormat := flag.String("f", "pretty", "set the output `format`. (pretty, json or json-pretty)")
+	flagWrite := flag.String("w", "", "`write` to file")
+	flagMaxFilesize := flag.Int64("m", 5000000, "the `maximum filesize` to process")
 	flag.Parse()
 	if *flagVersion {
 		fmt.Println(Version)
@@ -32,7 +30,7 @@ func main() {
 			// fmt.Println("File Processing failed!", err)
 			if err.Error() == "read "+sourcePath+": is a directory" {
 				// fmt.Println("Try to read as Directory...")
-				dirResult, errDir := commenttags.ProcessDirectory(sourcePath, MaxSizeFile)
+				dirResult, errDir := commenttags.ProcessDirectory(sourcePath, *flagMaxFilesize)
 				if errDir != nil {
 					fmt.Println("Read Directory failed!", err)
 					return
@@ -73,6 +71,6 @@ func main() {
 		}
 
 	} else {
-		fmt.Println("Missing Filepath")
+		fmt.Println("Missing Filepath, See the -h help out...")
 	}
 }
