@@ -5,14 +5,14 @@ import (
 	"strings"
 )
 
-// CommentTag store data for a code comment tag
+// CommentTag store data of a comment tag
 type CommentTag struct {
 	Tag     string `json:"tag"`
 	Line    int    `json:"line"`
 	Message string `json:"message"`
 }
 
-// Use the ParseComment func to parse a source and return a new CommentTag.
+// ParseComment parse the source and return a new CommentTag.
 func ParseComment(source string) (*CommentTag, bool) {
 	tag := &CommentTag{}
 	var found bool
