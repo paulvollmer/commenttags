@@ -6,8 +6,8 @@ import (
 )
 
 type FileData struct {
-	Filename string
-	CommentTags
+	Filename string `json:"filename"`
+	Source
 }
 
 func ProcessFile(src string) (*FileData, error) {
@@ -15,7 +15,7 @@ func ProcessFile(src string) (*FileData, error) {
 	if err != nil {
 		return nil, err
 	}
-	tags := ProcessData(data)
+	tags := ProcessSource(data)
 	return &FileData{src, *tags}, nil
 }
 

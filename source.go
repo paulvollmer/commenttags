@@ -1,29 +1,17 @@
 package commenttags
 
 import (
-	"strings"
+	"encoding/json"
 )
 
-type CommentTags struct {
-	Tags []CommentTag
+type Source struct {
+	TotalLines int `json:"total_lines"`
+	// TotalTODOs  int   `json:"total_todos"`
+	// TotalFIXMEs int   `json:"total_fixmes"`
+	Tags []Tag `json:"tags"`
 }
 
-func ProcessData(data []byte) *CommentTags {
-	c := &CommentTags{}
-	lines := strings.Split(string(data), "\n")
-	for k, line := range lines {
-		// find code tags...
-		tag, found := ParseComment(line)
-		tag.Line = k + 1
-		if found {
-			// add a new todo message to the Todos array
-			c.Tags = append(c.Tags, *tag)
-		}
-	}
-	return c
-}
-
-func (c *CommentTags) Pretty() string {
+func (c *Source) Pretty() string {
 	out := ""
 	for _, v := range c.Tags {
 		out += v.Pretty()
@@ -31,8 +19,16 @@ func (c *CommentTags) Pretty() string {
 	return out
 }
 
-func (c *CommentTags) PrettyPrint() {
+func (c *Source) PrettyPrint() {
 	for _, v := range c.Tags {
 		v.PrettyPrint()
 	}
+}
+
+func (d *Source) JSON() ([]byte, error) {
+	data, err := json.Marshal(d)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }

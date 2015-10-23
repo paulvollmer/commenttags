@@ -16,7 +16,7 @@ func Test_ProcessFile(t *testing.T) {
 	if len(tags.Tags) != 8 {
 		t.Error("ProcessFile Tags length not equal.")
 	}
-	if tags.Tags[0].Tag != "TODO" {
+	if tags.Tags[0].Type != "TODO" {
 		t.Error("ProcessFile Tag not equal.")
 	}
 	if tags.Tags[0].Message != "test-1" {

@@ -2,18 +2,20 @@ package commenttags
 
 import (
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"os"
 )
 
 type DirectoryData struct {
-	Dirname string
-	Files   []FileData
+	Dirname             string
+	TotalProcessedLines int
+	TotalProcessedFiles int
+	Files               []FileData
 }
 
 func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
-	fmt.Println("ProcessDirectory", name)
+	// fmt.Println("ProcessDirectory", name)
 	data := &DirectoryData{}
 	data.Dirname = name
 
@@ -30,6 +32,8 @@ func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
 				if v.Name() != ".git" {
 					tmp, _ := ProcessDirectory(name+"/"+v.Name(), maxSize)
 					// HACK: exception handler...
+					data.TotalProcessedLines += tmp.TotalProcessedLines
+					data.TotalProcessedFiles += tmp.TotalProcessedFiles
 					for _, v := range tmp.Files {
 						data.Files = append(data.Files, v)
 					}
@@ -41,6 +45,8 @@ func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
 				if errFiles != nil {
 					return nil, errFiles
 				}
+				data.TotalProcessedLines += tmpFiles.TotalLines
+				data.TotalProcessedFiles++
 				// if tags exist, add to the files array
 				if len(tmpFiles.Tags) > 0 {
 					data.Files = append(data.Files, *tmpFiles)
@@ -55,6 +61,14 @@ func (d *DirectoryData) PrettyPrint() {
 	for _, v := range d.Files {
 		v.PrettyPrint()
 	}
+}
+
+func (d *DirectoryData) JSON() ([]byte, error) {
+	data, err := json.Marshal(d)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }
 
 func (d *DirectoryData) SaveJSON(filename string, perm os.FileMode) error {

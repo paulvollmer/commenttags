@@ -2,67 +2,21 @@ package commenttags
 
 import (
 	"fmt"
-	"strings"
 )
 
-// CommentTag store data of a comment tag
-type CommentTag struct {
-	Tag     string `json:"tag"`
+// Tag store data of a comment tag
+type Tag struct {
+	Type    string `json:"type"`
 	Line    int    `json:"line"`
 	Message string `json:"message"`
 }
 
-// ParseComment parse the source and return a new CommentTag.
-func ParseComment(source string) (*CommentTag, bool) {
-	tag := &CommentTag{}
-	var found bool
-	for i := 0; i < 5; i++ {
-		switch i {
-		case 0:
-			tag, found = ParseCommentTag(source, TagFIXME)
-			break
-		case 1:
-			tag, found = ParseCommentTag(source, TagTODO)
-			break
-		case 2:
-			tag, found = ParseCommentTag(source, TagHACK)
-			break
-		case 3:
-			tag, found = ParseCommentTag(source, TagUNDONE)
-			break
-		case 4:
-			tag, found = ParseCommentTag(source, TagXXX)
-			break
-		}
-		if found {
-			return tag, true
-		}
-	}
-	return &CommentTag{}, false
+// Pretty return the Tag data as string
+func (t *Tag) Pretty() string {
+	return fmt.Sprintf("Tag %s @line %d \t '%s'\n", t.Type, t.Line, t.Message)
 }
 
-func ParseCommentTag(source, tag string) (*CommentTag, bool) {
-	r := CommentTag{}
-	// check if tag exist
-	search := tag + ":"
-	// fmt.Println("Search:", search, "Tag:", tag)
-	if strings.Contains(source, search) {
-		// get message
-		splitted := strings.SplitAfter(source, search)
-		if len(splitted) > 1 {
-			r.Message = strings.TrimSpace(splitted[1])
-			r.Tag = tag
-			return &r, true
-		}
-	}
-	return &r, false
-}
-
-// Print the data to stdout
-func (t *CommentTag) Pretty() string {
-	return fmt.Sprintf("Tag %s @line %d \t '%s'\n", t.Tag, t.Line, t.Message)
-}
-
-func (t *CommentTag) PrettyPrint() {
+// PrettyPrint print the Tag data to stdout
+func (t *Tag) PrettyPrint() {
 	fmt.Printf(t.Pretty() + "\n")
 }
