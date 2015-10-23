@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// Tag store data of a comment tag
+// Tag store data of one comment tag
 type Tag struct {
 	Type    string `json:"type"`
 	Line    int    `json:"line"`

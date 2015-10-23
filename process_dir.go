@@ -2,16 +2,15 @@ package commenttags
 
 import (
 	"encoding/json"
-	// "fmt"
 	"io/ioutil"
 	"os"
 )
 
 type DirectoryData struct {
-	Dirname             string
-	TotalProcessedLines int
-	TotalProcessedFiles int
-	Files               []FileData
+	Dirname             string     `json:"dirname"`
+	TotalProcessedFiles int        `json:"total_processed_files"`
+	TotalProcessedLines int        `json:"total_processed_lines"`
+	Files               []FileData `json:"files"`
 }
 
 func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
