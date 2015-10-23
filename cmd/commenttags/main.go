@@ -10,14 +10,21 @@ import (
 )
 
 const (
-	Version     = "0.1.0"
-	MaxSizeFile = 5000000
+	Version          = "0.1.1"
+	SourceTypeFile   = 0
+	SourceTypeFolder = 1
+)
+
+var (
+	formatted  string
+	sourceType int
 )
 
 func main() {
-	flagVersion := flag.Bool("v", false, "Print out the version")
-	flagFormat := flag.String("f", "pretty", "format as pretty formatted text or json")
-	flagWrite := flag.String("write", "", "write to file")
+	flagVersion := flag.Bool("v", false, "print out the `version`")
+	flagFormat := flag.String("f", "pretty", "set the output `format`. (pretty, json or json-pretty)")
+	flagWrite := flag.String("w", "", "`write` to file")
+	flagMaxFilesize := flag.Int64("m", 5000000, "the `maximum filesize` to process")
 	flag.Parse()
 	if *flagVersion {
 		fmt.Println(Version)
@@ -25,47 +32,65 @@ func main() {
 	}
 
 	if len(os.Args) > 1 {
-		// TODO: check if file or directory
+		//
+		// process data
+		//
 		sourcePath := os.Args[len(os.Args)-1]
+		folderResult := &commenttags.DirectoryData{}
 		fileResult, err := commenttags.ProcessFile(sourcePath)
 		if err != nil {
-			// fmt.Println("File Processing failed!", err)
+			// check if directory
 			if err.Error() == "read "+sourcePath+": is a directory" {
-				// fmt.Println("Try to read as Directory...")
-				dirResult, errDir := commenttags.ProcessDirectory(sourcePath, MaxSizeFile)
-				if errDir != nil {
-					fmt.Println("Read Directory failed!", err)
-					return
-				}
-				// dirResult PrettyPrint()
-				// fmt.Println(dirResult)
-				for _, v := range dirResult.Files {
-					v.PrettyPrint()
+				sourceType = SourceTypeFolder
+				// Try to read as directory...
+				folderResult, err = commenttags.ProcessDirectory(sourcePath, *flagMaxFilesize)
+				if err != nil {
+					fmt.Println("read directory failed!", err)
+					os.Exit(1)
 				}
 			}
-			return
 		}
 
+		//
 		// format the result result
-		formatted := ""
+		//
 		switch *flagFormat {
 		case "pretty":
-			formatted = fileResult.Pretty()
+			if sourceType == SourceTypeFile {
+				formatted = fileResult.Pretty()
+			} else if sourceType == SourceTypeFolder {
+				formatted += folderResult.Pretty()
+			}
 			break
 		case "json":
-			out, _ := json.Marshal(fileResult)
-			formatted = string(out)
+			if sourceType == SourceTypeFile {
+				out, _ := fileResult.JSON()
+				formatted = string(out)
+			} else if sourceType == SourceTypeFolder {
+				tmp, _ := folderResult.JSON()
+				formatted = string(tmp)
+			}
 			break
 		case "json-pretty":
-			out, _ := json.MarshalIndent(fileResult, "", "  ")
-			formatted = string(out)
+			if sourceType == SourceTypeFile {
+				out, _ := json.MarshalIndent(fileResult, "", "  ")
+				formatted = string(out)
+			} else if sourceType == SourceTypeFolder {
+				out, _ := json.MarshalIndent(folderResult, "", "  ")
+				formatted = string(out)
+			}
 			break
 		default:
-			fmt.Println("Format not supported")
+			fmt.Printf("Format '%s' not supported! Choose between the following formats:\n", *flagFormat)
+			fmt.Println("- pretty (default)")
+			fmt.Println("- json")
+			fmt.Println("- json-pretty")
 			break
 		}
 
+		//
 		// write or print out the result
+		//
 		if *flagWrite != "" {
 			ioutil.WriteFile(*flagWrite, []byte(formatted), 0777)
 		} else {
@@ -73,6 +98,6 @@ func main() {
 		}
 
 	} else {
-		fmt.Println("Missing Filepath")
+		fmt.Println("Missing Filepath, See the -h help out...")
 	}
 }

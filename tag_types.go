@@ -1,6 +1,7 @@
 package commenttags
 
-// Check out the wikipedia documentation at
+// This source countains the tags as string.
+// Check out the wikipedia documentation at:
 // https://en.wikipedia.org/wiki/Comment_(computer_programming)#Tags
 const (
 	TagFIXME  = "FIXME"  // should be corrected

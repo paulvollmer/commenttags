@@ -6,19 +6,23 @@ import (
 )
 
 type FileData struct {
-	Filename string
-	CommentTags
+	Filename string `json:"filename"`
+	Source
 }
 
 func ProcessFile(src string) (*FileData, error) {
 	data, err := ioutil.ReadFile(src)
 	if err != nil {
-		return &FileData{}, err
+		return nil, err
 	}
-	tags := ProcessData(data)
+	tags := ProcessSource(data)
 	return &FileData{src, *tags}, nil
 }
 
+func (f *FileData) Pretty() string {
+	return fmt.Sprintf("### %s\n%s\n", f.Filename, f.PrettySource())
+}
+
 func (f *FileData) PrettyPrint() {
-	fmt.Printf("### %s\n%s\n", f.Filename, f.Pretty())
+	fmt.Printf("### %s\n%s", f.Filename, f.Pretty())
 }
