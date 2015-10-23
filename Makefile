@@ -11,3 +11,7 @@ test:
 	@go test -v -cover
 	@echo "### TESTING CMD ######################################################"
 	@cd cmd/commenttags && go test -v -cover
+
+clean:
+	@rm tmp.json
+	@rm cmd/commenttags/commenttags
