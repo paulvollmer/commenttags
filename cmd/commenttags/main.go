@@ -56,13 +56,10 @@ func main() {
 		//
 		switch *flagFormat {
 		case "pretty":
-			println("ok, pretty")
 			if sourceType == SourceTypeFile {
 				formatted = fileResult.Pretty()
 			} else if sourceType == SourceTypeFolder {
-				for _, v := range folderResult.Files {
-					formatted += v.Pretty()
-				}
+				formatted += folderResult.Pretty()
 			}
 			break
 		case "json":

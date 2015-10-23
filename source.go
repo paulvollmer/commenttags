@@ -2,6 +2,7 @@ package commenttags
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // Source store the tags of one text source
@@ -13,19 +14,17 @@ type Source struct {
 }
 
 // Pretty return the Source data as string
-func (c *Source) Pretty() string {
+func (c *Source) PrettySource() string {
 	out := ""
 	for _, v := range c.Tags {
-		out += v.Pretty()
+		out += v.Pretty() + "\n"
 	}
 	return out
 }
 
 // PrettyPrint print the Source data to stdout
 func (c *Source) PrettyPrint() {
-	for _, v := range c.Tags {
-		v.PrettyPrint()
-	}
+	fmt.Println(c.PrettySource())
 }
 
 // JSON return the Store data as formatted json byte array

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	// "strconv"
 )
 
 type DirectoryData struct {
@@ -54,6 +55,19 @@ func ProcessDirectory(name string, maxSize int64) (*DirectoryData, error) {
 		}
 	}
 	return data, nil
+}
+
+func (d *DirectoryData) Pretty() string {
+	out := ""
+	// additional infos...
+	// out += "Dirname: " + d.Dirname + "\n"
+	// out += "Total processed files: " + strconv.Itoa(d.TotalProcessedFiles) + "\n"
+	// out += "Total processed lines: " + strconv.Itoa(d.TotalProcessedLines) + "\n"
+	// out += "----------------------\n\n"
+	for _, v := range d.Files {
+		out += v.Pretty()
+	}
+	return out
 }
 
 func (d *DirectoryData) PrettyPrint() {

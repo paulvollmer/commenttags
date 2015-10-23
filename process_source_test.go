@@ -18,4 +18,10 @@ func Test_ProcessSource(t *testing.T) {
 	if tags.Tags[0].Line != 1 {
 		t.Error("ProcessSource Line not equal.")
 	}
+	tags.PrettyPrint()
+	tagsJSON, err := tags.JSON()
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(string(tagsJSON))
 }
