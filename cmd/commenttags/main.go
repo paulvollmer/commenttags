@@ -9,7 +9,16 @@ import (
 	"os"
 )
 
-const Version = "0.1.0"
+const (
+	Version          = "0.1.0"
+	SourceTypeFile   = 0
+	SourceTypeFolder = 1
+)
+
+var (
+	formatted  string
+	sourceType int
+)
 
 func main() {
 	flagVersion := flag.Bool("v", false, "print out the `version`")
@@ -23,47 +32,68 @@ func main() {
 	}
 
 	if len(os.Args) > 1 {
-		// TODO: check if file or directory
+		//
+		// process data
+		//
 		sourcePath := os.Args[len(os.Args)-1]
+		folderResult := &commenttags.DirectoryData{}
 		fileResult, err := commenttags.ProcessFile(sourcePath)
 		if err != nil {
-			// fmt.Println("File Processing failed!", err)
+			// check if directory
 			if err.Error() == "read "+sourcePath+": is a directory" {
-				// fmt.Println("Try to read as Directory...")
-				dirResult, errDir := commenttags.ProcessDirectory(sourcePath, *flagMaxFilesize)
-				if errDir != nil {
-					fmt.Println("Read Directory failed!", err)
-					return
-				}
-				// dirResult PrettyPrint()
-				// fmt.Println(dirResult)
-				for _, v := range dirResult.Files {
-					v.PrettyPrint()
+				sourceType = SourceTypeFolder
+				// Try to read as directory...
+				folderResult, err = commenttags.ProcessDirectory(sourcePath, *flagMaxFilesize)
+				if err != nil {
+					fmt.Println("read directory failed!", err)
+					os.Exit(1)
 				}
 			}
-			return
 		}
 
+		//
 		// format the result result
-		formatted := ""
+		//
 		switch *flagFormat {
 		case "pretty":
-			formatted = fileResult.Pretty()
+			println("ok, pretty")
+			if sourceType == SourceTypeFile {
+				formatted = fileResult.Pretty()
+			} else if sourceType == SourceTypeFolder {
+				for _, v := range folderResult.Files {
+					formatted += v.Pretty()
+				}
+			}
 			break
 		case "json":
-			out, _ := json.Marshal(fileResult)
-			formatted = string(out)
+			if sourceType == SourceTypeFile {
+				out, _ := fileResult.JSON()
+				formatted = string(out)
+			} else if sourceType == SourceTypeFolder {
+				tmp, _ := folderResult.JSON()
+				formatted = string(tmp)
+			}
 			break
 		case "json-pretty":
-			out, _ := json.MarshalIndent(fileResult, "", "  ")
-			formatted = string(out)
+			if sourceType == SourceTypeFile {
+				out, _ := json.MarshalIndent(fileResult, "", "  ")
+				formatted = string(out)
+			} else if sourceType == SourceTypeFolder {
+				out, _ := json.MarshalIndent(folderResult, "", "  ")
+				formatted = string(out)
+			}
 			break
 		default:
-			fmt.Println("Format not supported")
+			fmt.Printf("Format '%s' not supported! Choose between the following formats:\n", *flagFormat)
+			fmt.Println("- pretty (default)")
+			fmt.Println("- json")
+			fmt.Println("- json-pretty")
 			break
 		}
 
+		//
 		// write or print out the result
+		//
 		if *flagWrite != "" {
 			ioutil.WriteFile(*flagWrite, []byte(formatted), 0777)
 		} else {
