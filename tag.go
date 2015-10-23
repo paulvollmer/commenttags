@@ -2,6 +2,7 @@ package commenttags
 
 import (
 	"fmt"
+	"strconv"
 )
 
 // Tag store data of one comment tag
@@ -13,10 +14,10 @@ type Tag struct {
 
 // Pretty return the Tag data as string
 func (t *Tag) Pretty() string {
-	return fmt.Sprintf("Tag %s @line %d \t '%s'\n", t.Type, t.Line, t.Message)
+	return "Tag " + t.Type + " @line " + strconv.Itoa(t.Line) + " \t '" + t.Message + "'"
 }
 
 // PrettyPrint print the Tag data to stdout
 func (t *Tag) PrettyPrint() {
-	fmt.Printf(t.Pretty() + "\n")
+	fmt.Println(t.Pretty())
 }
