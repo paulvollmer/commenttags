@@ -14,4 +14,4 @@ test:
 
 clean:
 	@rm tmp.json
-	@rm cmd/commenttags/commenttags
+	@rm cmd/commenttags/commenttags*
