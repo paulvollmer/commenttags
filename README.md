@@ -9,7 +9,7 @@ Fast and easy to distribute (binary) tool. No language like node.js or ruby requ
 
 Install the commandline interface by running
 ```
-go install github.com/paulvollmer/commenttags/cmd/commenttags
+go get github.com/paulvollmer/commenttags/cmd/commenttags
 ```
 
 ## Usage
