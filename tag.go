@@ -14,7 +14,7 @@ type Tag struct {
 
 // Pretty return the Tag data as string
 func (t *Tag) Pretty() string {
-	return "Tag " + t.Type + " @line " + strconv.Itoa(t.Line) + " \t '" + t.Message + "'"
+	return "Tag " + t.Type + " @line " + strconv.Itoa(t.Line) + " \t '" + t.Message + "'  "
 }
 
 // PrettyPrint print the Tag data to stdout

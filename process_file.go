@@ -20,9 +20,9 @@ func ProcessFile(src string) (*FileData, error) {
 }
 
 func (f *FileData) Pretty() string {
-	return fmt.Sprintf("### %s\n%s\n", f.Filename, f.PrettySource())
+	return fmt.Sprintf("### %s\n%s  \n", f.Filename, f.PrettySource())
 }
 
 func (f *FileData) PrettyPrint() {
-	fmt.Printf("### %s\n%s", f.Filename, f.Pretty())
+	fmt.Printf("### %s  \n%s", f.Filename, f.Pretty())
 }

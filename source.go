@@ -17,7 +17,7 @@ type Source struct {
 func (c *Source) PrettySource() string {
 	out := ""
 	for _, v := range c.Tags {
-		out += v.Pretty() + "\n"
+		out += v.Pretty() + "  \n"
 	}
 	return out
 }
