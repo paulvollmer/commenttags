@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/paulvollmer/commenttags"
 	"io/ioutil"
 	"os"
+
+	"github.com/paulvollmer/commenttags"
 )
 
 const (
-	Version          = "0.1.1"
+	Version          = "0.1.2"
 	SourceTypeFile   = 0
 	SourceTypeFolder = 1
 )
