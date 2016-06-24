@@ -13,6 +13,13 @@ type Source struct {
 	Tags []Tag `json:"tags"`
 }
 
+func (c *Source) TagsFound() bool {
+	if len(c.Tags) != 0 {
+		return true
+	}
+	return false
+}
+
 // Pretty return the Source data as string
 func (c *Source) PrettySource() string {
 	out := ""
